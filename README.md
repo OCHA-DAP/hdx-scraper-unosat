@@ -1,7 +1,7 @@
 ### Collector for UNOSAT's Datasets
 [![Build Status](https://github.com/OCHA-DAP/hdx-scraper-unosat/workflows/build/badge.svg)](https://github.com/OCHA-DAP/hdx-scraper-unosat/actions?query=workflow%3Abuild) [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-unosat/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-unosat?branch=main)
 
-This script connects to the [UNOSAT API](https://unosat.org/product/feed/) and extracts data from 2 endpoints creating 2 global datasets and 2 datasets per country in HDX. It makes 1 read to InterAction and 100 read/writes (API calls) to HDX in a half hour period. It creates around 200 temporary files each a few Kb which it uploads into HDX. It is run every week.
+This script connects to the [UNOSAT API](https://unosat.org/product/feed/) and extracts data creating a dataset for each item in teh feed in HDX. It makes 1 read to UNOSAT's feed and 100 read/writes (API calls) to HDX in a half hour period. It is run every week.
 
 
 ### Usage
