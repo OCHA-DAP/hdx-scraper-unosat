@@ -1,0 +1,27 @@
+# Collector specific configuration
+url: "https://unosat.org/product/feed/"
+tag_mapping:
+  "AC": "hazards and risk"
+  "CW": "climate hazards"
+  "CE": "complex emergency-conflict-security"
+  "DR": "drought"
+  "EQ": "earthquakes-tsunami"
+  "EP": "epidemics-outbreaks"
+  "EC": "cyclones-hurricanes-typhoons"
+  "FR": "disaster risk reduction-drr"
+  "FL": "flooding-storm surge"
+  "FF": "flooding-storm surge"
+  "HT": "climate hazards"
+  "IN": None
+  "LS": "natural disasters"
+  "MS": "natural disasters"
+  "OT": None
+  "AV": "natural disasters"
+  "SS": "flooding-storm surge"
+  "ST": "climate hazards"
+  "TO": "climate hazards"
+  "TC": "cyclones-hurricanes-typhoons"
+  "TS": "earthquakes-tsunami"
+  "VW": "climate hazards"
+  "VO": "natural disasters"
+  "WF": "climate hazards"
