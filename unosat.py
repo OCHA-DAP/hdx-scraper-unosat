@@ -29,16 +29,19 @@ class UNOSAT:
         url = self.configuration["url"]
         rssfile = self.retriever.download_file(url, keep=True)
         feed = feedparser.parse(rssfile)
-        return feed.entries
+        results = list()
+        for entry in feed.entries:
+            published = parse_date(entry.published)
+            if published >= self.today - relativedelta(years=3):
+                entry.published = published
+                results.append(entry)
+        return results
 
     def generate_dataset(
         self,
         entry,
     ):
         """ """
-        published = parse_date(entry.published)
-        if published < self.today - relativedelta(years=1):
-            return None, None
         title = entry.title
         logger.info(f"Creating dataset: {title}")
         slugified_name = slugify(title)
@@ -74,7 +77,7 @@ class UNOSAT:
             if tag:
                 tags.append(tag)
         dataset.add_tags(tags)
-        dataset.set_date_of_dataset(published)
+        dataset.set_date_of_dataset(entry.published)
 
         def get_resource(link, file_format, description):
             filename = get_filename_from_url(link)

@@ -68,7 +68,7 @@ class TestUNOSAT:
                 today = parse_date("26/01/2023")
                 unosat = UNOSAT(configuration, retriever, today)
                 entries = unosat.parse_feed()
-                assert len(entries) == 4
+                assert len(entries) == 3
 
                 dataset, showcase = unosat.generate_dataset(entries[0])
                 assert dataset is None
@@ -236,6 +236,3 @@ class TestUNOSAT:
                     "title": "Static PDF Map",
                     "url": "https://unosat.org/static/unosat_filesystem/3471/UNOSAT_Preliminary_Assessment_Report_FL20221121PAK_Pakistan_WeeklyUpdate_20230120.pdf",
                 }
-
-                dataset, showcase = unosat.generate_dataset(entries[3])
-                assert dataset is None
