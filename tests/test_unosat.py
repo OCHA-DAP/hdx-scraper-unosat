@@ -1,6 +1,6 @@
 #!/usr/bin/python
 """
-Unit tests for InterAction.
+Unit tests for UNOSAT.
 
 """
 from os.path import join
@@ -10,7 +10,7 @@ from hdx.api.configuration import Configuration
 from hdx.api.locations import Locations
 from hdx.data.vocabulary import Vocabulary
 from hdx.location.country import Country
-from hdx.utilities.dateparse import parse_date
+from hdx.utilities.compare import assert_files_same
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
@@ -20,11 +20,19 @@ from unosat import UNOSAT
 
 class TestUNOSAT:
     @pytest.fixture(scope="function")
-    def configuration(self):
+    def fixtures(self):
+        return join("tests", "fixtures")
+
+    @pytest.fixture(scope="function")
+    def input_folder(self, fixtures):
+        return join(fixtures, "input")
+
+    @pytest.fixture(scope="function")
+    def configuration(self, input_folder):
         Configuration._create(
             hdx_read_only=True,
             user_agent="test",
-            project_config_yaml=join("config", "project_configuration.yml"),
+            project_config_yaml=join(input_folder, "project_configuration.yml"),
         )
         UserAgent.set_global("test")
         Country.countriesdata(use_live=False)
@@ -48,15 +56,11 @@ class TestUNOSAT:
         return configuration
 
     @pytest.fixture(scope="function")
-    def fixtures(self):
-        return join("tests", "fixtures")
-
-    @pytest.fixture(scope="function")
-    def input_folder(self, fixtures):
-        return join(fixtures, "input")
+    def output_last_build_date(self, fixtures):
+        return join(fixtures, "output_last_build_date.txt")
 
     def test_generate_datasets_and_showcases(
-        self, configuration, fixtures, input_folder
+        self, configuration, fixtures, input_folder, output_last_build_date
     ):
         with temp_dir(
             "test_unosat", delete_on_success=True, delete_on_failure=False
@@ -65,8 +69,7 @@ class TestUNOSAT:
                 retriever = Retrieve(
                     downloader, folder, input_folder, folder, False, True
                 )
-                today = parse_date("26/01/2023")
-                unosat = UNOSAT(configuration, retriever, today)
+                unosat = UNOSAT(configuration, retriever)
                 entries = unosat.parse_feed()
                 assert len(entries) == 3
 
@@ -236,3 +239,6 @@ class TestUNOSAT:
                     "title": "Static PDF Map",
                     "url": "https://unosat.org/static/unosat_filesystem/3471/UNOSAT_Preliminary_Assessment_Report_FL20221121PAK_Pakistan_WeeklyUpdate_20230120.pdf",
                 }
+                last_build_date_path = join(folder, "last_build_date.txt")
+                unosat.save_last_build_date(last_build_date_path)
+                assert_files_same(output_last_build_date, last_build_date_path)

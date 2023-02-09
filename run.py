@@ -8,7 +8,6 @@ from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
 from hdx.facades.infer_arguments import facade
-from hdx.utilities.dateparse import now_utc
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import progress_storing_folder, wheretostart_tempdir_batch
 from hdx.utilities.retriever import Retrieve
@@ -38,8 +37,7 @@ def main(save: bool = False, use_saved: bool = False) -> None:
             retriever = Retrieve(
                 downloader, folder, "saved_data", folder, save, use_saved
             )
-            today = now_utc()
-            unosat = UNOSAT(configuration, retriever, today)
+            unosat = UNOSAT(configuration, retriever)
             entries = unosat.parse_feed()
             logger.info(f"Number of datasets: {len(entries)}")
 
@@ -59,6 +57,7 @@ def main(save: bool = False, use_saved: bool = False) -> None:
                 )
                 showcase.create_in_hdx()
                 showcase.add_dataset(dataset)
+            unosat.save_last_build_date()
 
 
 if __name__ == "__main__":

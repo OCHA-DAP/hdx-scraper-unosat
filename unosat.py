@@ -9,32 +9,39 @@ Reads UNOSAT data and creates datasets.
 import logging
 
 import feedparser
-from dateutil.relativedelta import relativedelta
 from hdx.data.dataset import Dataset
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
+from hdx.utilities.loader import load_text
 from hdx.utilities.path import get_filename_from_url
+from hdx.utilities.saver import save_text
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
 
 class UNOSAT:
-    def __init__(self, configuration, retriever, today):
+    def __init__(self, configuration, retriever):
         self.configuration = configuration
         self.retriever = retriever
-        self.today = today
+        self.last_build_date = None
 
     def parse_feed(self):
+        last_build_date_path = self.configuration["last_build_date_path"]
+        previous_build_date = parse_date(load_text(last_build_date_path))
         url = self.configuration["url"]
         rssfile = self.retriever.download_file(url, keep=True)
         feed = feedparser.parse(rssfile)
-        results = list()
+        last_build_date = parse_date(feed.feed.updated)
+        results = []
+        if last_build_date <= previous_build_date:
+            return results
         for entry in feed.entries:
             published = parse_date(entry.published)
-            if published >= self.today - relativedelta(years=3):
+            if published > previous_build_date:
                 entry.published = published
                 results.append(entry)
+        self.last_build_date = last_build_date
         return results
 
     def generate_dataset(
@@ -130,3 +137,7 @@ class UNOSAT:
         showcase.add_tags(tags)
 
         return dataset, showcase
+
+    def save_last_build_date(self, path="last_build_date.txt"):
+        if self.last_build_date is not None:
+            save_text(self.last_build_date.date().isoformat(), path)
