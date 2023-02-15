@@ -3,6 +3,7 @@
 Unit tests for UNOSAT.
 
 """
+from datetime import datetime, timezone
 from os.path import join
 
 import pytest
@@ -10,7 +11,6 @@ from hdx.api.configuration import Configuration
 from hdx.api.locations import Locations
 from hdx.data.vocabulary import Vocabulary
 from hdx.location.country import Country
-from hdx.utilities.compare import assert_files_same
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
@@ -70,7 +70,12 @@ class TestUNOSAT:
                     downloader, folder, input_folder, folder, False, True
                 )
                 unosat = UNOSAT(configuration, retriever)
-                entries = unosat.parse_feed()
+                last_build_date, entries = unosat.parse_feed(
+                    datetime(2020, 2, 9, 0, 0, tzinfo=timezone.utc)
+                )
+                assert last_build_date == datetime(
+                    2023, 1, 25, 16, 5, 21, tzinfo=timezone.utc
+                )
                 assert len(entries) == 3
 
                 dataset, showcase = unosat.generate_dataset(entries[0])
@@ -239,6 +244,3 @@ class TestUNOSAT:
                     "title": "Static PDF Map",
                     "url": "https://unosat.org/static/unosat_filesystem/3471/UNOSAT_Preliminary_Assessment_Report_FL20221121PAK_Pakistan_WeeklyUpdate_20230120.pdf",
                 }
-                last_build_date_path = join(folder, "last_build_date.txt")
-                unosat.save_last_build_date(last_build_date_path)
-                assert_files_same(output_last_build_date, last_build_date_path)

@@ -1,6 +1,5 @@
 # Collector specific configuration
 url: "https://unosat.org/product/feed/"
-last_build_date_path: "last_build_date.txt"
 tag_mapping:
   "AC": "hazards and risk"
   "CW": "climate hazards"
