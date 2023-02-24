@@ -79,7 +79,7 @@ class UNOSAT:
             if tag:
                 tags.append(tag)
         dataset.add_tags(tags)
-        dataset.set_date_of_dataset(entry.published)
+        dataset.set_reference_period(entry.published)
 
         def get_resource(link, file_format, description):
             filename = get_filename_from_url(link)
