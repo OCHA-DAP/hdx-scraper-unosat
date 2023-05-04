@@ -24,15 +24,11 @@ class TestUNOSAT:
         return join("tests", "fixtures")
 
     @pytest.fixture(scope="function")
-    def input_folder(self, fixtures):
-        return join(fixtures, "input")
-
-    @pytest.fixture(scope="function")
-    def configuration(self, input_folder):
+    def configuration(self):
         Configuration._create(
             hdx_read_only=True,
             user_agent="test",
-            project_config_yaml=join(input_folder, "project_configuration.yml"),
+            project_config_yaml=join("config", "project_configuration.yml"),
         )
         UserAgent.set_global("test")
         Country.countriesdata(use_live=False)
@@ -55,20 +51,12 @@ class TestUNOSAT:
         }
         return configuration
 
-    @pytest.fixture(scope="function")
-    def output_last_build_date(self, fixtures):
-        return join(fixtures, "output_last_build_date.txt")
-
-    def test_generate_datasets_and_showcases(
-        self, configuration, fixtures, input_folder, output_last_build_date
-    ):
+    def test_generate_datasets_and_showcases(self, configuration, fixtures):
         with temp_dir(
             "test_unosat", delete_on_success=True, delete_on_failure=False
         ) as folder:
             with Download() as downloader:
-                retriever = Retrieve(
-                    downloader, folder, input_folder, folder, False, True
-                )
+                retriever = Retrieve(downloader, folder, fixtures, folder, False, True)
                 unosat = UNOSAT(configuration, retriever)
                 last_build_date, entries = unosat.parse_feed(
                     datetime(2020, 2, 9, 0, 0, tzinfo=timezone.utc)
