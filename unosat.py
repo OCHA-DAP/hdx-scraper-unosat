@@ -122,7 +122,7 @@ class UNOSAT:
                 image_link = link.href
         showcase = Showcase(
             {
-                "name": "%s-showcase" % slugified_name,
+                "name": f"{slugified_name}-showcase",
                 "title": title,
                 "notes": "Click to go to showcase",
                 "url": showcase_link,
