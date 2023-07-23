@@ -10,6 +10,7 @@ import logging
 
 import feedparser
 from hdx.data.dataset import Dataset
+from hdx.data.resource import Resource
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.path import get_filename_from_url
@@ -83,12 +84,16 @@ class UNOSAT:
 
         def get_resource(link, file_format, description):
             filename = get_filename_from_url(link)
-            return {
-                "name": filename,
-                "format": file_format,
-                "url": link,
-                "description": description,
-            }
+            resource = Resource(
+                {
+                    "name": filename,
+                    "format": file_format,
+                    "url": link,
+                    "description": description,
+                }
+            )
+            resource.mark_data_updated()
+            return resource
 
         resources = []
         gdb_link = entry.gdb_link
