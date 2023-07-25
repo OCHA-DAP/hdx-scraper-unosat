@@ -92,7 +92,7 @@ class UNOSAT:
                     "description": description,
                 }
             )
-            resource.mark_data_updated()
+            resource.set_date_data_updated(entry.published)
             return resource
 
         resources = []
