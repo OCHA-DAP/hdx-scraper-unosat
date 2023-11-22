@@ -55,7 +55,7 @@ class UNOSAT:
         event_code = entry.eventcode
         gdacs_eventid = entry.gdacs_eventid
         if gdacs_eventid and gdacs_eventid.lower() != "none":
-            gdacs_id = f", GDACS Id: {gdacs_eventid}"
+            gdacs_id = f", GDACS ID: {gdacs_eventid}"
         else:
             gdacs_id = ""
         summary = entry.summary
