@@ -109,7 +109,7 @@ class TestUNOSAT:
                     {
                         "description": "Zipped geodatabase",
                         "format": "geodatabase",
-                        "last_modified": "2023-01-25T00:00:00",
+                        "last_modified": "2023-01-25T14:07:32.000000",
                         "name": "FL20220424SSD.gdb.zip",
                         "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD.gdb.zip",
@@ -118,7 +118,7 @@ class TestUNOSAT:
                     {
                         "description": "Zipped shapefile",
                         "format": "shp",
-                        "last_modified": "2023-01-25T00:00:00",
+                        "last_modified": "2023-01-25T14:07:32.000000",
                         "name": "FL20220424SSD_SHP.zip",
                         "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD_SHP.zip",
@@ -127,7 +127,7 @@ class TestUNOSAT:
                     {
                         "description": "Excel file",
                         "format": "xlsx",
-                        "last_modified": "2023-01-25T00:00:00",
+                        "last_modified": "2023-01-25T14:07:32.000000",
                         "name": "UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
                         "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3473/UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
@@ -196,7 +196,7 @@ class TestUNOSAT:
                     {
                         "description": "Zipped geodatabase",
                         "format": "geodatabase",
-                        "last_modified": "2023-01-20T00:00:00",
+                        "last_modified": "2023-01-20T14:44:27.000000",
                         "name": "FL20221121PAK_gdb.zip",
                         "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3471/FL20221121PAK_gdb.zip",
@@ -205,7 +205,7 @@ class TestUNOSAT:
                     {
                         "description": "Zipped shapefile",
                         "format": "shp",
-                        "last_modified": "2023-01-20T00:00:00",
+                        "last_modified": "2023-01-20T14:44:27.000000",
                         "name": "FL20221121PAK_SHP.zip",
                         "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3471/FL20221121PAK_SHP.zip",
@@ -214,7 +214,7 @@ class TestUNOSAT:
                     {
                         "description": "Excel file",
                         "format": "xlsx",
-                        "last_modified": "2023-01-20T00:00:00",
+                        "last_modified": "2023-01-20T14:44:27.000000",
                         "name": "UNOSAT_Population_Exposure_FL20221121PAK_WeeklyUpdate_09Jan2023_15Jan2023_Pakistan.xlsx",
                         "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3471/UNOSAT_Population_Exposure_FL20221121PAK_WeeklyUpdate_09Jan2023_15Jan2023_Pakistan.xlsx",
