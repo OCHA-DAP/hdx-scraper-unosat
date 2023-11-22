@@ -76,7 +76,7 @@ class TestUNOSAT:
                     "groups": [{"name": "ssd"}],
                     "maintainer": "83fa9515-3ba4-4f1d-9860-f38b20f80442",
                     "name": "satellite-detected-water-extents-between-17-and-21-january-2023-over-south-sudan",
-                    "notes": "**UNOSAT code FL20220424SSD**  This map illustrates "
+                    "notes": "**UNOSAT code: FL20220424SSD**  This map illustrates "
                     "cumulative satellite-detected water using VIIRS in South Sudan "
                     "between 17 to 21 January 2023 compared with the period from 12 to "
                     "16 January 2023. Within the cloud free analyzed areas of about "
@@ -159,7 +159,7 @@ class TestUNOSAT:
                     "groups": [{"name": "pak"}],
                     "maintainer": "83fa9515-3ba4-4f1d-9860-f38b20f80442",
                     "name": "preliminary-satellite-derived-flood-evolution-assessment-islamic-republic-of-pakistan-20-j",
-                    "notes": "**UNOSAT code FL20221121PAK**  Status: Overall "
+                    "notes": "**UNOSAT code: FL20221121PAK**  Status: Overall "
                     "decrease of flood waters observed\n"
                     "Further action(s): continue monitoring\n"
                     "Evolution of Cumulative Flood Waters over I.R. of Pakistan (01-07 "

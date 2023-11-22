@@ -59,7 +59,7 @@ class UNOSAT:
         else:
             gdacs_id = ""
         summary = entry.summary
-        notes = f"**UNOSAT code {event_code}{gdacs_id}**  {summary}"
+        notes = f"**UNOSAT code: {event_code}{gdacs_id}**  {summary}"
         dataset = Dataset(
             {
                 "name": slugified_name,
