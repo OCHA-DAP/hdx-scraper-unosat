@@ -1,2 +1,2 @@
-hdx-python-api==6.1.4
-feedparser==6.0.10
+hdx-python-api==6.3.2
+feedparser==6.0.11
