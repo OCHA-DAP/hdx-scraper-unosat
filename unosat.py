@@ -71,6 +71,10 @@ class UNOSAT:
         dataset.set_organization("ba5aacba-0633-4364-9528-bc76a3f6cf95")
         dataset.set_expected_update_frequency("Never")
         dataset.set_subnational(True)
+        countryiso3 = entry.iso3
+        if not countryiso3:
+            logger.error(f"ISO3 is blank for {title}!")
+            return None, None
         for countryiso in entry.iso3.split(";"):
             dataset.add_country_location(countryiso)
         tag_mapping = self.configuration["tag_mapping"]
