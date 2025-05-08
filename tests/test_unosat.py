@@ -3,19 +3,21 @@
 Unit tests for UNOSAT.
 
 """
+
 from datetime import datetime, timezone
 from os.path import join
 
 import pytest
+
 from hdx.api.configuration import Configuration
 from hdx.api.locations import Locations
 from hdx.data.vocabulary import Vocabulary
 from hdx.location.country import Country
+from hdx.scraper.unosat.unosat import UNOSAT
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.useragent import UserAgent
-from unosat import UNOSAT
 
 
 class TestUNOSAT:
