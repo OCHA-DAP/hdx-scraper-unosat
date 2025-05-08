@@ -6,15 +6,17 @@ UNOSAT:
 Reads UNOSAT data and creates datasets.
 
 """
+
 import logging
 
 import feedparser
+from slugify import slugify
+
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.path import get_filename_from_url
-from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
@@ -125,6 +127,8 @@ class UNOSAT:
         if not showcase_link:
             showcase_link = entry.pdf
             title = "Static PDF Map"
+        if not showcase_link:
+            return dataset, None
         image_link = None
         for link in entry.links:
             if "image" in link.type:
