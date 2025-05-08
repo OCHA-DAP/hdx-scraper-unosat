@@ -9,49 +9,16 @@ from os.path import join
 
 import pytest
 
-from hdx.api.configuration import Configuration
-from hdx.api.locations import Locations
-from hdx.data.vocabulary import Vocabulary
-from hdx.location.country import Country
 from hdx.scraper.unosat.unosat import UNOSAT
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
-from hdx.utilities.useragent import UserAgent
 
 
 class TestUNOSAT:
     @pytest.fixture(scope="function")
     def fixtures(self):
         return join("tests", "fixtures")
-
-    @pytest.fixture(scope="function")
-    def configuration(self):
-        Configuration._create(
-            hdx_read_only=True,
-            user_agent="test",
-            project_config_yaml=join("config", "project_configuration.yaml"),
-        )
-        UserAgent.set_global("test")
-        Country.countriesdata(use_live=False)
-        Locations.set_validlocations(
-            [
-                {"name": "vut", "title": "vut"},
-                {"name": "ssd", "title": "ssd"},
-                {"name": "pak", "title": "pak"},
-                {"name": "irq", "title": "irq"},
-            ]
-        )
-        configuration = Configuration.read()
-        tags = configuration["tag_mapping"].values()
-        Vocabulary._tags_dict = {tag: {"Action to Take": "ok"} for tag in tags}
-        tags = [{"name": "geodata"}] + [{"name": tag} for tag in tags]
-        Vocabulary._approved_vocabulary = {
-            "tags": tags,
-            "id": "4e61d464-4943-4e97-973a-84673c1aaa87",
-            "name": "approved",
-        }
-        return configuration
 
     def test_generate_datasets_and_showcases(self, configuration, fixtures):
         with temp_dir(

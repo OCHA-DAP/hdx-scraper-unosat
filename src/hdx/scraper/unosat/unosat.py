@@ -123,12 +123,12 @@ class UNOSAT:
         dataset.add_update_resources(resources)
 
         showcase_link = entry.wmap_link
-        if not showcase_link:
-            return dataset, None
         title = "WMap Link"
         if not showcase_link:
             showcase_link = entry.pdf
             title = "Static PDF Map"
+        if not showcase_link:
+            return dataset, None
         image_link = None
         for link in entry.links:
             if "image" in link.type:
