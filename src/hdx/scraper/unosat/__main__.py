@@ -40,11 +40,10 @@ def main(save: bool = False, use_saved: bool = False) -> None:
     """
 
     logger.info(f"##### {lookup} version {__version__} ####")
-    if not User.check_current_user_organization_access(
-        "ba5aacba-0633-4364-9528-bc76a3f6cf95", "create_dataset"
-    ):
-        raise PermissionError("API Token does not give access to UNOSAT organisation!")
     configuration = Configuration.read()
+    User.check_current_user_write_access(
+        "ba5aacba-0633-4364-9528-bc76a3f6cf95", configuration=configuration
+    )
     with State("last_build_date.txt", parse_date, iso_string_from_datetime) as state:
         with wheretostart_tempdir_batch(lookup) as info:
             folder = info["folder"]
