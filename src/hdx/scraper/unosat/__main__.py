@@ -8,6 +8,7 @@ import logging
 from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
+from hdx.api.utilities.hdx_state import HDXState
 from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
 from hdx.scraper.unosat._version import __version__
@@ -20,7 +21,6 @@ from hdx.utilities.path import (
     wheretostart_tempdir_batch,
 )
 from hdx.utilities.retriever import Retrieve
-from hdx.utilities.state import State
 
 logger = logging.getLogger(__name__)
 
@@ -44,9 +44,15 @@ def main(save: bool = False, use_saved: bool = False) -> None:
     User.check_current_user_write_access(
         "ba5aacba-0633-4364-9528-bc76a3f6cf95", configuration=configuration
     )
-    with State("last_build_date.txt", parse_date, iso_string_from_datetime) as state:
-        with wheretostart_tempdir_batch(lookup) as info:
-            folder = info["folder"]
+    with wheretostart_tempdir_batch(lookup) as info:
+        folder = info["folder"]
+        with HDXState(
+            "pipeline-state-unosat",
+            folder,
+            parse_date,
+            iso_string_from_datetime,
+            configuration,
+        ) as state:
             with Download() as downloader:
                 retriever = Retrieve(
                     downloader, folder, "saved_data", folder, save, use_saved
