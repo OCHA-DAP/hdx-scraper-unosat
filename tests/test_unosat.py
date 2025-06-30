@@ -9,7 +9,7 @@ from os.path import join
 
 import pytest
 
-from hdx.scraper.unosat.unosat import UNOSAT
+from hdx.scraper.unosat.pipeline import Pipeline
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
@@ -26,8 +26,8 @@ class TestUNOSAT:
         ) as folder:
             with Download() as downloader:
                 retriever = Retrieve(downloader, folder, fixtures, folder, False, True)
-                unosat = UNOSAT(configuration, retriever)
-                last_build_date, entries = unosat.parse_feed(
+                pipeline = Pipeline(configuration, retriever)
+                last_build_date, entries = pipeline.parse_feed(
                     datetime(2020, 2, 9, 0, 0, tzinfo=timezone.utc)
                 )
                 assert last_build_date == datetime(
@@ -35,10 +35,10 @@ class TestUNOSAT:
                 )
                 assert len(entries) == 3
 
-                dataset, showcase = unosat.generate_dataset(entries[0])
+                dataset, showcase = pipeline.generate_dataset(entries[0])
                 assert dataset is None
 
-                dataset, showcase = unosat.generate_dataset(entries[1])
+                dataset, showcase = pipeline.generate_dataset(entries[1])
                 assert dataset == {
                     "data_update_frequency": "-1",
                     "dataset_date": "[2023-01-25T00:00:00 TO 2023-01-25T00:00:00]",
@@ -121,7 +121,7 @@ class TestUNOSAT:
                     "url": "https://unosat.maps.arcgis.com/apps/dashboards/b3c40fc3e6ec46668b26019db0b11f7c",
                 }
 
-                dataset, showcase = unosat.generate_dataset(entries[2])
+                dataset, showcase = pipeline.generate_dataset(entries[2])
                 assert dataset == {
                     "data_update_frequency": "-1",
                     "dataset_date": "[2023-01-20T00:00:00 TO 2023-01-20T00:00:00]",

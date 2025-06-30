@@ -21,7 +21,7 @@ from hdx.utilities.path import get_filename_from_url
 logger = logging.getLogger(__name__)
 
 
-class UNOSAT:
+class Pipeline:
     def __init__(self, configuration, retriever):
         self.configuration = configuration
         self.retriever = retriever
