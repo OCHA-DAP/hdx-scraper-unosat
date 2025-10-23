@@ -77,30 +77,24 @@ class TestUNOSAT:
                 assert resources == [
                     {
                         "description": "Zipped geodatabase",
-                        "format": "geodatabase",
+                        "format": "Geodatabase",
                         "last_modified": "2023-01-25T14:07:32.000000",
                         "name": "FL20220424SSD.gdb.zip",
-                        "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD.gdb.zip",
-                        "url_type": "api",
                     },
                     {
                         "description": "Zipped shapefile",
-                        "format": "shp",
+                        "format": "SHP",
                         "last_modified": "2023-01-25T14:07:32.000000",
                         "name": "FL20220424SSD_SHP.zip",
-                        "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD_SHP.zip",
-                        "url_type": "api",
                     },
                     {
                         "description": "Excel file",
-                        "format": "xlsx",
+                        "format": "XLSX",
                         "last_modified": "2023-01-25T14:07:32.000000",
                         "name": "UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
-                        "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3473/UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
-                        "url_type": "api",
                     },
                 ]
                 assert showcase == {
@@ -164,30 +158,24 @@ class TestUNOSAT:
                 assert resources == [
                     {
                         "description": "Zipped geodatabase",
-                        "format": "geodatabase",
+                        "format": "Geodatabase",
                         "last_modified": "2023-01-20T14:44:27.000000",
                         "name": "FL20221121PAK_gdb.zip",
-                        "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3471/FL20221121PAK_gdb.zip",
-                        "url_type": "api",
                     },
                     {
                         "description": "Zipped shapefile",
-                        "format": "shp",
+                        "format": "SHP",
                         "last_modified": "2023-01-20T14:44:27.000000",
                         "name": "FL20221121PAK_SHP.zip",
-                        "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3471/FL20221121PAK_SHP.zip",
-                        "url_type": "api",
                     },
                     {
                         "description": "Excel file",
-                        "format": "xlsx",
+                        "format": "XLSX",
                         "last_modified": "2023-01-20T14:44:27.000000",
                         "name": "UNOSAT_Population_Exposure_FL20221121PAK_WeeklyUpdate_09Jan2023_15Jan2023_Pakistan.xlsx",
-                        "resource_type": "api",
                         "url": "https://unosat.org/static/unosat_filesystem/3471/UNOSAT_Population_Exposure_FL20221121PAK_WeeklyUpdate_09Jan2023_15Jan2023_Pakistan.xlsx",
-                        "url_type": "api",
                     },
                 ]
                 assert showcase == {
