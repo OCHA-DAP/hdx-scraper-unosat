@@ -4,15 +4,15 @@ Unit tests for UNOSAT.
 
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from os.path import join
 
 import pytest
-
-from hdx.scraper.unosat.pipeline import Pipeline
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
+
+from hdx.scraper.unosat.pipeline import Pipeline
 
 
 class TestUNOSAT:
@@ -28,11 +28,9 @@ class TestUNOSAT:
                 retriever = Retrieve(downloader, folder, fixtures, folder, False, True)
                 pipeline = Pipeline(configuration, retriever)
                 last_build_date, entries = pipeline.parse_feed(
-                    datetime(2020, 2, 9, 0, 0, tzinfo=timezone.utc)
+                    datetime(2020, 2, 9, 0, 0, tzinfo=UTC)
                 )
-                assert last_build_date == datetime(
-                    2023, 1, 25, 16, 5, 21, tzinfo=timezone.utc
-                )
+                assert last_build_date == datetime(2023, 1, 25, 16, 5, 21, tzinfo=UTC)
                 assert len(entries) == 3
 
                 dataset, showcase = pipeline.generate_dataset(entries[0])

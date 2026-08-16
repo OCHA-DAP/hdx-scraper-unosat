@@ -10,13 +10,12 @@ Reads UNOSAT data and creates datasets.
 import logging
 
 import feedparser
-from slugify import slugify
-
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.url import get_filename_from_url
+from slugify import slugify
 
 logger = logging.getLogger(__name__)
 

@@ -11,8 +11,6 @@ from hdx.api.configuration import Configuration
 from hdx.api.utilities.hdx_state import HDXState
 from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
-from hdx.scraper.unosat._version import __version__
-from hdx.scraper.unosat.pipeline import Pipeline
 from hdx.utilities.dateparse import iso_string_from_datetime, parse_date
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import (
@@ -21,6 +19,9 @@ from hdx.utilities.path import (
     wheretostart_tempdir_batch,
 )
 from hdx.utilities.retriever import Retrieve
+
+from hdx.scraper.unosat._version import __version__
+from hdx.scraper.unosat.pipeline import Pipeline
 
 logger = logging.getLogger(__name__)
 
