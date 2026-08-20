@@ -10,13 +10,12 @@ Reads UNOSAT data and creates datasets.
 import logging
 
 import feedparser
-from slugify import slugify
-
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.data.showcase import Showcase
 from hdx.utilities.dateparse import parse_date
 from hdx.utilities.url import get_filename_from_url
+from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +39,16 @@ class Pipeline:
             if published > previous_build_date:
                 entry.published = published
                 results.append(entry)
+        # Some entries are republished under the same title (eg. a corrected
+        # version of the same event). Since the dataset name is derived from
+        # the title, keep only the most recently published entry per title to
+        # avoid creating/updating the same dataset more than once per run.
+        latest_by_title = {}
+        for entry in results:
+            existing = latest_by_title.get(entry.title)
+            if existing is None or entry.published > existing.published:
+                latest_by_title[entry.title] = entry
+        results = sorted(latest_by_title.values(), key=lambda entry: entry.published)
         return last_build_date, results
 
     def generate_dataset(
