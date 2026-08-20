@@ -31,89 +31,12 @@ class TestUNOSAT:
                     datetime(2020, 2, 9, 0, 0, tzinfo=UTC)
                 )
                 assert last_build_date == datetime(2023, 1, 25, 16, 5, 21, tzinfo=UTC)
-                assert len(entries) == 3
+                # Two entries share a title (a republished/corrected version of
+                # the same event) and are deduplicated down to the newest one,
+                # so 5 raw entries become 4
+                assert len(entries) == 4
 
                 dataset, showcase = pipeline.generate_dataset(entries[0])
-                assert dataset is None
-
-                dataset, showcase = pipeline.generate_dataset(entries[1])
-                assert dataset == {
-                    "data_update_frequency": "-1",
-                    "dataset_date": "[2023-01-25T00:00:00 TO 2023-01-25T00:00:00]",
-                    "groups": [{"name": "ssd"}],
-                    "maintainer": "83fa9515-3ba4-4f1d-9860-f38b20f80442",
-                    "name": "satellite-detected-water-extents-between-17-and-21-january-2023-over-south-sudan",
-                    "notes": "**UNOSAT code: FL20220424SSD**  This map illustrates "
-                    "cumulative satellite-detected water using VIIRS in South Sudan "
-                    "between 17 to 21 January 2023 compared with the period from 12 to "
-                    "16 January 2023. Within the cloud free analyzed areas of about "
-                    "629,000 km², a total of about 47,700 km² of lands appear to be "
-                    "affected with flood waters. Water extent appears to have increased "
-                    "of about 3,000 km² since the period between 12 to 16 January 2022. "
-                    "Based on Worldpop population data and the maximal flood water "
-                    "extent ~795,000 people are potentially exposed or living close to "
-                    "flooded areas.\n"
-                    "This is a preliminary analysis and has not yet been validated in "
-                    "the field. Please send ground feedback to the United Nations "
-                    "Satellite Centre (UNOSAT).",
-                    "owner_org": "ba5aacba-0633-4364-9528-bc76a3f6cf95",
-                    "subnational": "1",
-                    "tags": [
-                        {
-                            "name": "geodata",
-                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
-                        },
-                        {
-                            "name": "flooding-storm surge",
-                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
-                        },
-                    ],
-                    "title": "Satellite detected water extents between 17 and 21 January 2023 "
-                    "over South Sudan",
-                }
-                resources = dataset.get_resources()
-                assert resources == [
-                    {
-                        "description": "Zipped geodatabase",
-                        "format": "Geodatabase",
-                        "last_modified": "2023-01-25T14:07:32.000000",
-                        "name": "FL20220424SSD.gdb.zip",
-                        "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD.gdb.zip",
-                    },
-                    {
-                        "description": "Zipped shapefile",
-                        "format": "SHP",
-                        "last_modified": "2023-01-25T14:07:32.000000",
-                        "name": "FL20220424SSD_SHP.zip",
-                        "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD_SHP.zip",
-                    },
-                    {
-                        "description": "Excel file",
-                        "format": "XLSX",
-                        "last_modified": "2023-01-25T14:07:32.000000",
-                        "name": "UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
-                        "url": "https://unosat.org/static/unosat_filesystem/3473/UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
-                    },
-                ]
-                assert showcase == {
-                    "image_url": "https://unosat.org/static/unosat_filesystem/3473/UNOSAT_A3_Natural_Landscape_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.JPG",
-                    "name": "satellite-detected-water-extents-between-17-and-21-january-2023-over-south-sudan-showcase",
-                    "notes": "Click to go to showcase",
-                    "tags": [
-                        {
-                            "name": "geodata",
-                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
-                        },
-                        {
-                            "name": "flooding-storm surge",
-                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
-                        },
-                    ],
-                    "title": "WMap Link",
-                    "url": "https://unosat.maps.arcgis.com/apps/dashboards/b3c40fc3e6ec46668b26019db0b11f7c",
-                }
-
-                dataset, showcase = pipeline.generate_dataset(entries[2])
                 assert dataset == {
                     "data_update_frequency": "-1",
                     "dataset_date": "[2023-01-20T00:00:00 TO 2023-01-20T00:00:00]",
@@ -193,3 +116,95 @@ class TestUNOSAT:
                     "title": "Static PDF Map",
                     "url": "https://unosat.org/static/unosat_filesystem/3471/UNOSAT_Preliminary_Assessment_Report_FL20221121PAK_Pakistan_WeeklyUpdate_20230120.pdf",
                 }
+
+                # Only the newer version (V2, product 5002) of the
+                # duplicate-titled event survives deduplication; the older V1
+                # (product 5001) is dropped entirely so its resources never
+                # reach HDX
+                dataset, showcase = pipeline.generate_dataset(entries[1])
+                assert dataset["name"] == "test-version-update-assessment"
+                resources = dataset.get_resources()
+                assert [resource["url"] for resource in resources] == [
+                    "https://unosat.org/static/unosat_filesystem/5002/EQ20230124SSD.gdb.zip",
+                    "https://unosat.org/static/unosat_filesystem/5002/EQ20230124SSD_SHP.zip",
+                ]
+
+                dataset, showcase = pipeline.generate_dataset(entries[2])
+                assert dataset == {
+                    "data_update_frequency": "-1",
+                    "dataset_date": "[2023-01-25T00:00:00 TO 2023-01-25T00:00:00]",
+                    "groups": [{"name": "ssd"}],
+                    "maintainer": "83fa9515-3ba4-4f1d-9860-f38b20f80442",
+                    "name": "satellite-detected-water-extents-between-17-and-21-january-2023-over-south-sudan",
+                    "notes": "**UNOSAT code: FL20220424SSD**  This map illustrates "
+                    "cumulative satellite-detected water using VIIRS in South Sudan "
+                    "between 17 to 21 January 2023 compared with the period from 12 to "
+                    "16 January 2023. Within the cloud free analyzed areas of about "
+                    "629,000 km², a total of about 47,700 km² of lands appear to be "
+                    "affected with flood waters. Water extent appears to have increased "
+                    "of about 3,000 km² since the period between 12 to 16 January 2022. "
+                    "Based on Worldpop population data and the maximal flood water "
+                    "extent ~795,000 people are potentially exposed or living close to "
+                    "flooded areas.\n"
+                    "This is a preliminary analysis and has not yet been validated in "
+                    "the field. Please send ground feedback to the United Nations "
+                    "Satellite Centre (UNOSAT).",
+                    "owner_org": "ba5aacba-0633-4364-9528-bc76a3f6cf95",
+                    "subnational": "1",
+                    "tags": [
+                        {
+                            "name": "geodata",
+                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
+                        },
+                        {
+                            "name": "flooding-storm surge",
+                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
+                        },
+                    ],
+                    "title": "Satellite detected water extents between 17 and 21 January 2023 "
+                    "over South Sudan",
+                }
+                resources = dataset.get_resources()
+                assert resources == [
+                    {
+                        "description": "Zipped geodatabase",
+                        "format": "Geodatabase",
+                        "last_modified": "2023-01-25T14:07:32.000000",
+                        "name": "FL20220424SSD.gdb.zip",
+                        "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD.gdb.zip",
+                    },
+                    {
+                        "description": "Zipped shapefile",
+                        "format": "SHP",
+                        "last_modified": "2023-01-25T14:07:32.000000",
+                        "name": "FL20220424SSD_SHP.zip",
+                        "url": "https://unosat.org/static/unosat_filesystem/3473/FL20220424SSD_SHP.zip",
+                    },
+                    {
+                        "description": "Excel file",
+                        "format": "XLSX",
+                        "last_modified": "2023-01-25T14:07:32.000000",
+                        "name": "UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
+                        "url": "https://unosat.org/static/unosat_filesystem/3473/UNOSAT_Population_Exposure_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.xlsx",
+                    },
+                ]
+                assert showcase == {
+                    "image_url": "https://unosat.org/static/unosat_filesystem/3473/UNOSAT_A3_Natural_Landscape_FL20220424SSD_17Jan_21Jan2023_SouthSudan_Week9.JPG",
+                    "name": "satellite-detected-water-extents-between-17-and-21-january-2023-over-south-sudan-showcase",
+                    "notes": "Click to go to showcase",
+                    "tags": [
+                        {
+                            "name": "geodata",
+                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
+                        },
+                        {
+                            "name": "flooding-storm surge",
+                            "vocabulary_id": "4e61d464-4943-4e97-973a-84673c1aaa87",
+                        },
+                    ],
+                    "title": "WMap Link",
+                    "url": "https://unosat.maps.arcgis.com/apps/dashboards/b3c40fc3e6ec46668b26019db0b11f7c",
+                }
+
+                dataset, showcase = pipeline.generate_dataset(entries[3])
+                assert dataset is None
